@@ -10,9 +10,7 @@ const userRoutes=require("./router/userRoutes")
 dotenv.config()
 const app=express()
 // app.use(cors())
-app.use(cors({
-  origin: "https://referal-management-system.netlify.app/", 
-}));
+app.use(cors());
 
 app.use(express.json())
 
