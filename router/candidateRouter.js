@@ -40,6 +40,33 @@ router.get("/dashboard",async(req,res)=>{
     }
 })
 
+router.get("/search",async(req,res)=>{
+    const {query}=req.query
+    try{
+        const search=await candidateModel.find({
+            $or:[{
+              name:{$regex:query,$options: 'i'}
+              },
+               {
+              jobTitle:{$regex:query,$options:'i'}
+                },
+              {
+              status:{$regex:query,$options:'i'}
+              }]
+          })
+          if(!search || search.length===0){
+            return res.status(404).json({message:"item not found"})
+          }
+      
+          res.status(200).json(search)
+      
+    }
+    catch(err){
+        console.log("error in search>>",err)
+        res.status(500).json({message:"failed to search the candidate",err})
+    }
+})
+
 router.put("/update",authMiddleware, async (req, res) => {
     const { _id, status } = req.body; 
 
